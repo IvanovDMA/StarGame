@@ -65,6 +65,7 @@ public class MenuScreen extends Base2DScreen {
         batch.dispose();
         background.dispose();
         super.dispose();
+
     }
 
     @Override
