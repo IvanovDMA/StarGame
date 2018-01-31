@@ -16,7 +16,13 @@ public class MenuScreen extends Base2DScreen {
     private SpriteBatch batch;
     private Texture background;
     private Texture img;
-    private Vector2 v1;
+    private Vector2 position;
+    private Vector2 targetPosition;
+    float vx;
+    float tuchX;
+    float tuchY;
+    float x;
+    float y;
 
     public MenuScreen(Game game) {
         super(game);
@@ -27,22 +33,31 @@ public class MenuScreen extends Base2DScreen {
         super.show();
         batch = new SpriteBatch();
         background = new Texture("space3.png");
-        img = new Texture("badlogic.jpg");
+        img = new Texture("Human-Fighter.png");
+        position = new Vector2((Gdx.graphics.getWidth() / 2), (Gdx.graphics.getWidth() / 4));
+//        vx = 30.0f;
     }
 
     @Override
     public void render(float delta) {
+        float dt = Gdx.graphics.getDeltaTime();
+        update(dt);
         super.render(delta);
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-//
-//
         batch.draw(background, 0, 0);
-        if (Gdx.input.isTouched()) {
-            batch.draw(img, Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
-        }
+        batch.draw(img, x, y);
         batch.end();
+    }
+
+    public void update(float dt) {
+        x = position.x;
+        y = position.y;
+        if (tuchX != 0 && tuchY !=0) {
+            x = targetPosition.x;
+            y = targetPosition.y;
+        }
     }
 
     @Override
@@ -54,6 +69,9 @@ public class MenuScreen extends Base2DScreen {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        tuchX = screenX;
+        tuchY = Gdx.graphics.getHeight() - screenY;
+        targetPosition = new Vector2(tuchX, tuchY);
         return super.touchUp(screenX, screenY, pointer, button);
     }
 }
