@@ -15,7 +15,7 @@ public class MenuScreen extends Base2DScreen {
 
     private SpriteBatch batch;
     private Texture background;
-    private Texture img;
+    private Texture spaceShip;
     private Vector2 position;
     private Vector2 targetPosition;
     float vx;
@@ -33,7 +33,7 @@ public class MenuScreen extends Base2DScreen {
         super.show();
         batch = new SpriteBatch();
         background = new Texture("space3.png");
-        img = new Texture("Human-Fighter.png");
+        spaceShip = new Texture("Human-Fighter.png");
         position = new Vector2((Gdx.graphics.getWidth() / 2), (Gdx.graphics.getWidth() / 4));
 //        vx = 30.0f;
     }
@@ -47,7 +47,7 @@ public class MenuScreen extends Base2DScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(background, 0, 0);
-        batch.draw(img, x, y);
+        batch.draw(spaceShip, x, y);
         batch.end();
     }
 
@@ -64,8 +64,8 @@ public class MenuScreen extends Base2DScreen {
     public void dispose() {
         batch.dispose();
         background.dispose();
+        spaceShip.dispose();
         super.dispose();
-
     }
 
     @Override
