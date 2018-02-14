@@ -9,8 +9,10 @@ import ru.geekbrains.stargame.StarGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 800;
+//		float aspect = 480f / 854;
+		float aspect = 3f / 4;
 		config.height = 600;
+		config.width = (int) (config.height * aspect);
 		new LwjglApplication(new Star2DGame(), config);
 	}
 }
