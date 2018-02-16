@@ -70,4 +70,8 @@ public abstract class SpritesPool<T extends Sprite> {
     protected void debugLog() {
 
     }
+
+    public List<T> getActiveObjects() {
+        return activeObjects;
+    }
 }

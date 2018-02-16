@@ -126,13 +126,4 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
             throw new RuntimeException("Unknown src " + src);
         }
     }
-
-//    @Override
-//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-////        tuchX = ;
-////        tuchY = ;
-//        currentPosition.set(screenX, Gdx.graphics.getHeight() - screenY);
-////        targetPosition = new Vector2(tuchX, tuchY);
-//        return super.touchDown(screenX, screenY, pointer, button);
-//    }
 }

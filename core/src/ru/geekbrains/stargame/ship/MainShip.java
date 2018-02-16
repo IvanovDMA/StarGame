@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.bullet.BulletPool;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.explosion.Explosion;
+import ru.geekbrains.stargame.explosion.ExplosionPool;
 
 
 public class MainShip extends Ship {
@@ -22,28 +24,26 @@ public class MainShip extends Ship {
 
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
-    private Sound sound;
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound sound) {
-        super(atlas.findRegion("main_ship"), 1, 2, 2, sound);
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool, Rect worldbounds, Sound shootSound) {
+        super(atlas.findRegion("main_ship"), 1, 2, 2, bulletPool, explosionPool, worldbounds, shootSound);
         setHeightProportion(SHIP_HEIGHT);
-        this.bulletPool = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
-        this.bulletHeight = 0.01f;
+        this.bulletHeight = 0.015f;
         this.bulletV.set(0, 0.5f);
         this.bulletDamage = 1;
         this.reloadInterval = 0.2f;
-        this.sound = sound;
     }
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         pos.mulAdd(v, delta);
-        reloadTimer += delta;
-        if (reloadTimer > reloadInterval) {
-            reloadTimer = 0f;
-            shoot();
-        }
+//        reloadTimer += delta;
+//        if (reloadTimer > reloadInterval) {
+//            reloadTimer = 0f;
+           // shoot();
+//        }
         if (getRight() > worldBounds.getRight()) {
         setRight(worldBounds.getRight());
         stop();
@@ -165,4 +165,13 @@ public class MainShip extends Ship {
     public Vector2 getV() {
         return v;
     }
+
+    public boolean isBulletCollision(Rect bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > getTop()
+                || bullet.getTop() < pos.y);
+    }
+
+
 }

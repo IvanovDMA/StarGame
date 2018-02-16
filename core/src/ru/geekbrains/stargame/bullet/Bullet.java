@@ -10,7 +10,7 @@ import ru.geekbrains.stargame.engine.math.Rect;
 public class Bullet extends Sprite {
 
     private Rect worldBounds;
-    private static Vector2 v = new Vector2();
+    private final Vector2 v = new Vector2();
     private int damage;
     private Object owner;
 
@@ -26,7 +26,7 @@ public class Bullet extends Sprite {
             float height,
             Rect worldBounds,
             int damage
-            ) {
+    ) {
         this.owner = owner;
         this.regions[0] = region;
         this.pos.set(pos0);
