@@ -13,7 +13,6 @@ public class EnemyShip extends Ship {
     private enum State{DESCENT, FIGHT}
     private State state;
 
-
     private MainShip mainShip;
     private Vector2 descentV = new Vector2(0, -0.15f);
     private Vector2 v0 = new Vector2();
@@ -63,7 +62,8 @@ public class EnemyShip extends Ship {
             int bulletDamage,
             float reloadInterval,
             float height,
-            int hp
+            int hp,
+            Sound shootSound
     ) {
         this.regions = regions;
         this.v0.set(v0);
@@ -73,6 +73,7 @@ public class EnemyShip extends Ship {
         this.bulletDamage = bulletDamage;
         this.reloadInterval = reloadInterval;
         this.hp = hp;
+        this.shootSound = shootSound;
         setHeightProportion(height);
         v.set(descentV);
         state = State.DESCENT;

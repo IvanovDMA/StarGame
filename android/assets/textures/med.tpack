@@ -1,0 +1,19 @@
+
+med.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+image1
+  rotate: false
+  xy: 1, 215
+  size: 636, 212
+  orig: 636, 212
+  offset: 0, 0
+  index: -1
+image2
+  rotate: false
+  xy: 1, 1
+  size: 636, 212
+  orig: 636, 212
+  offset: 0, 0
+  index: -1

@@ -26,7 +26,7 @@ public class Ship extends Sprite {
     protected TextureRegion bulletRegion;
 
     protected final Vector2 bulletV = new Vector2(); //скорость пули
-    protected float bulletHeight; //высота пуди
+    protected float bulletHeight; //высота пули
     protected int bulletDamage; //урон от пули
     protected float reloadInterval; //время перезарядки
     protected float reloadTimer; //таймер для стрельбы
@@ -78,7 +78,21 @@ public class Ship extends Sprite {
     public void damage(int damage) {
         frame = 1;
         damageAnimateTimer = 0;
-        hp -= damage; //+++
+        hp -= damage;
+        if (hp < 0) {
+            hp = 0;
+        }
+        if (hp == 0) {
+            boom();
+            setDestroyed(true);
+        }
+    }
+
+    public void addDamage(int damage) {
+        hp += damage;
+        if (hp > 100) {
+            hp = 100;
+        }
     }
 
     @Override
@@ -93,6 +107,7 @@ public class Ship extends Sprite {
     }
 
     public void boom(){
+        hp = 0;
         Explosion explosion = explosionPool.obtain();
         explosion.set(getHeight(), pos);
     }

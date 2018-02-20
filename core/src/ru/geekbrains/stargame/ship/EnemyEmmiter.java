@@ -1,6 +1,8 @@
 package ru.geekbrains.stargame.ship;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -20,14 +22,14 @@ public class EnemyEmmiter {
 
     private static final float ENEMY_MIDDLE_HEIGHT = 0.1f;
     private static final float ENEMY_MIDDLE_BULLET_HEIGHT = 0.02f;
-    private static final float ENEMY_MIDDLE_BULLET_VY = -0.25f;
+    private static final float ENEMY_MIDDLE_BULLET_VY = -0.55f;
     private static final int ENEMY_MIDDLE_BULLET_DAMAGE = 5;
     private static final float ENEMY_MIDDLE_RELOAD_INTERVAL = 4f;
     private static final int ENEMY_MIDDLE_HP = 5;
 
     private static final float ENEMY_BIG_HEIGHT = 0.2f;
     private static final float ENEMY_BIG_BULLET_HEIGHT = 0.04f;
-    private static final float ENEMY_BIG_BULLET_VY = -0.5f;
+    private static final float ENEMY_BIG_BULLET_VY = -0.7f;
     private static final int ENEMY_BIG_BULLET_DAMAGE = 10;
     private static final float ENEMY_BIG_RELOAD_INTERVAL = 4f;
     private static final int ENEMY_BIG_HP = 20;
@@ -40,6 +42,11 @@ public class EnemyEmmiter {
     private final TextureRegion[] enemyMiddleRegion;
     private final TextureRegion[] enemyBigRegion;
 
+    private final Sound enemySmallShootSound;
+    private final Sound enemyMiddleShootSound;
+    private final Sound enemyBigShootSound;
+
+    private int stage;
     private float generateTimer;
     private float generateInterval = 4.0f;
     private final EnemyPool enemyPool;
@@ -53,9 +60,17 @@ public class EnemyEmmiter {
         enemyMiddleRegion = Regions.split(atlas.findRegion("enemy1"), 1, 2, 2);
         enemyBigRegion = Regions.split(atlas.findRegion("enemy2"), 1, 2, 2);
         bulletRegion = atlas.findRegion("bulletEnemy");
+        enemySmallShootSound = Gdx.audio.newSound(Gdx.files.internal("sounds/new/repeat-1.wav"));
+        enemyMiddleShootSound = Gdx.audio.newSound(Gdx.files.internal("sounds/new/bcfire01.wav"));
+        enemyBigShootSound = Gdx.audio.newSound(Gdx.files.internal("sounds/new/ATST-ChinGuns.wav"));
     }
 
-    public void generateEnemy(float delta) {
+    public void setToNewGame() {
+        stage = 1;
+    }
+
+    public void generateEnemy(float delta, int frags) {
+        stage = frags / 5 + 1;
         generateTimer += delta;
         if (generateInterval <= generateTimer) {
             generateTimer = 0f;
@@ -68,10 +83,11 @@ public class EnemyEmmiter {
                         bulletRegion,
                         ENEMY_SMALL_BULLET_HEIGHT,
                         ENEMY_SMALL_BULLET_VY,
-                        ENEMY_SMALL_BULLET_DAMAGE,
+                        ENEMY_SMALL_BULLET_DAMAGE + stage,
                         ENEMY_SMALL_RELOAD_INTERVAL,
                         ENEMY_SMALL_HEIGHT,
-                        ENEMY_SMALL_HP
+                        ENEMY_SMALL_HP + stage,
+                        enemySmallShootSound
                 );
             } else if (type < 0.9f) {
                 enemy.set(
@@ -80,10 +96,11 @@ public class EnemyEmmiter {
                         bulletRegion,
                         ENEMY_MIDDLE_BULLET_HEIGHT,
                         ENEMY_MIDDLE_BULLET_VY,
-                        ENEMY_MIDDLE_BULLET_DAMAGE,
+                        ENEMY_MIDDLE_BULLET_DAMAGE + stage,
                         ENEMY_MIDDLE_RELOAD_INTERVAL,
                         ENEMY_MIDDLE_HEIGHT,
-                        ENEMY_MIDDLE_HP
+                        ENEMY_MIDDLE_HP + stage,
+                        enemyMiddleShootSound
                 );
             } else {
                 enemy.set(
@@ -92,14 +109,19 @@ public class EnemyEmmiter {
                         bulletRegion,
                         ENEMY_BIG_BULLET_HEIGHT,
                         ENEMY_BIG_BULLET_VY,
-                        ENEMY_BIG_BULLET_DAMAGE,
+                        ENEMY_BIG_BULLET_DAMAGE + stage,
                         ENEMY_BIG_RELOAD_INTERVAL,
                         ENEMY_BIG_HEIGHT,
-                        ENEMY_BIG_HP
+                        ENEMY_BIG_HP + stage,
+                        enemyBigShootSound
                 );
             }
         enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(), worldBounds.getRight() - enemy.getHalfWidth());
         enemy.setBottom(worldBounds.getTop());
         }
+    }
+
+    public int getStage() {
+        return stage;
     }
 }

@@ -1,13 +1,9 @@
 package ru.geekbrains.stargame.engine.pool;
 
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import ru.geekbrains.stargame.engine.ActionListener;
 import ru.geekbrains.stargame.engine.Sprite;
 
 public abstract class SpritesPool<T extends Sprite> {
@@ -53,6 +49,11 @@ public abstract class SpritesPool<T extends Sprite> {
                 sprite.setDestroyed(false);
             }
         }
+    }
+
+    public void freeAllActiveObjects() {
+        freeObjects.addAll(activeObjects);
+        activeObjects.clear();
     }
 
     public void free (T object) {

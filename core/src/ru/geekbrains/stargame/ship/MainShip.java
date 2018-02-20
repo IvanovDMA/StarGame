@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.bullet.BulletPool;
 import ru.geekbrains.stargame.engine.math.Rect;
-import ru.geekbrains.stargame.explosion.Explosion;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
 
 
@@ -17,7 +16,6 @@ public class MainShip extends Ship {
     private static final int INVALID_POINTER = -1;
 
     private final Vector2 v0 = new Vector2(0.5f, 0.0f);
-//    private final Vector2 v1 = new Vector2(0.0f, 0.5f);
 
     private boolean pressedLeft;
     private boolean pressedRight;
@@ -29,10 +27,16 @@ public class MainShip extends Ship {
         super(atlas.findRegion("main_ship"), 1, 2, 2, bulletPool, explosionPool, worldbounds, shootSound);
         setHeightProportion(SHIP_HEIGHT);
         this.bulletRegion = atlas.findRegion("bulletMainShip");
+    }
+
+    public void setToNewGame() {
+        pos.x = worldBounds.pos.x;
         this.bulletHeight = 0.015f;
         this.bulletV.set(0, 0.5f);
         this.bulletDamage = 1;
         this.reloadInterval = 0.2f;
+        hp = 100;
+        setDestroyed(false);
     }
 
     @Override
@@ -67,22 +71,11 @@ public class MainShip extends Ship {
                 pressedLeft = true;
                 moveLeft();
                 break;
-
             case Input.Keys.D:
             case Input.Keys.RIGHT:
                 pressedRight = true;
                 moveRight();
                 break;
-
-//            case Input.Keys.W:
-//            case Input.Keys.UP:
-//                moveUp();
-//                break;
-//
-//            case Input.Keys.S:
-//            case Input.Keys.DOWN:
-//                moveDown();
-//                break;
         }
     }
 
@@ -106,10 +99,6 @@ public class MainShip extends Ship {
                 } else {
                     stop();
                 }
-//            case Input.Keys.W:
-//            case Input.Keys.UP:
-//            case Input.Keys.S:
-//            case Input.Keys.DOWN:
                 break;
             case Input.Keys.UP:
             case Input.Keys.W:
@@ -129,6 +118,9 @@ public class MainShip extends Ship {
             rightPointer = pointer;
             moveRight();
         }
+        if (worldBounds.pos.y > touch.y) {
+            shoot();
+        }
     }
 
     @Override
@@ -141,14 +133,6 @@ public class MainShip extends Ship {
         if (leftPointer != INVALID_POINTER) moveLeft(); else stop();
         }
     }
-
-//    private void moveUp() {
-//        v.set(v1);
-//    }
-//
-//    private void moveDown() {
-//        v.set(v1).rotate(180);
-//    }
 
     private void moveRight() {
         v.set(v0);
@@ -169,9 +153,7 @@ public class MainShip extends Ship {
     public boolean isBulletCollision(Rect bullet) {
         return !(bullet.getRight() < getLeft()
                 || bullet.getLeft() > getRight()
-                || bullet.getBottom() > getTop()
-                || bullet.getTop() < pos.y);
+                || bullet.getBottom() > pos.y
+                || bullet.getTop() < getBottom());
     }
-
-
 }
